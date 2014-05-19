@@ -12,20 +12,22 @@ for line in f:
 songs_ordered = sorted(song_to_count.keys(),
 						key = lambda s: song_to_count[s],
 						reverse  = True)
+f.close()
 
+f1 = open('kaggle_visible_evaluation_triplets.txt','r')
 user_to_songs = dict()
-for line in f:
-	user,song,_ = line.strip().split('\t')
+for line in f1:
+	user,song, _ = line.strip().split('\t')
 	if user in user_to_songs:
 		user_to_songs[user].add(song)
 	else:
 		user_to_songs[user] = set([song])
 
-f.close()
+# f5 = open('user_to_songs.txt','w')
+# print >> f5, user_to_songs
+# f5.close()
 
-
-
-
+f1.close()
 
 
 
@@ -41,20 +43,19 @@ song_to_index = dict(map (lambda line:
 							f3.readlines()))
 f3.close()
 
-f = open('submission.txt','w');
-for user in canonical_users:
-	print "user is "+user
+f4 = open('submission.txt','w');
+for user in canonical_users:		
 	songs_to_recommend = []
 	for song in songs_ordered:
 		if len(songs_to_recommend) >=500:
 			break
-		print "song is  "+song	
+		#print "song is  "+song	
 		if not song in user_to_songs[user]:
 			songs_to_recommend.append(song)
 	indices = map(lambda s:song_to_index[s],
 					songs_to_recommend)
-	f.write(' '.join(indices)+'\n')
-f.close()
+f4.write(' '.join(indices)+'\n')
+f4.close()
 
 
 
